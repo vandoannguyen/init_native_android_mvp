@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import com.example.init_app_vpn_native.R;
 import com.example.init_app_vpn_native.base.BaseActivity;
-import com.example.init_app_vpn_native.utils.Ads;
 
 public class MainActivity extends BaseActivity implements IMainActivity {
     MainPresenter<IMainActivity> presenter;
@@ -14,7 +13,6 @@ public class MainActivity extends BaseActivity implements IMainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Ads.getInstance(this).initAds();
         presenter = new MainPresenter<>(this);
         presenter.onAttact(this);
         presenter.getExample();
