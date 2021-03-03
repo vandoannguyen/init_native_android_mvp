@@ -4,4 +4,8 @@ import com.example.init_app_vpn_native.base.MVPPresenter;
 
 public interface IMainPresenter<V extends IMainActivity> extends MVPPresenter<V> {
     void getExample();
+
+    void insertNote();
+
+    void getListNote();
 }
