@@ -1,9 +1,9 @@
 package com.example.init_app_vpn_native.ui.main;
 
 import android.content.Context;
+import android.view.View;
 
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.example.init_app_vpn_native.base.BaseViewModel;
 import com.example.init_app_vpn_native.data.AppDataHelper;
@@ -71,6 +71,18 @@ public class MainViewModel extends BaseViewModel {
 
                     }
                 });
+    }
+
+    @Override
+    public void initViewModelData() {
+        super.initViewModelData();
+        listNote = new MutableLiveData<>();
+        dems = new MutableLiveData<>();
+        isLoading = new MutableLiveData<>();
+    }
+
+    public void onClickAdd(View v) {
+        insertNote(null);
     }
 
     public void initData() {

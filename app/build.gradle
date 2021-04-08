@@ -2,7 +2,9 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
-
+    dataBinding {
+        enabled = true
+    }
     defaultConfig {
         applicationId "com.example.init_app_vpn_native"
         minSdkVersion 19
@@ -40,9 +42,6 @@ dependencies {
 
 //    rx android
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
-    // Because RxAndroid releases are few and far between, it is recommended you also
-    // explicitly depend on RxJava's latest version for bug fixes and new features.
-    // (see https://github.com/ReactiveX/RxJava/releases for latest 3.x.x version)
     implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
 
 
@@ -50,16 +49,11 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
-
-    // optional - RxJava support for Room
     implementation "androidx.room:room-rxjava2:$room_version"
-
-    // optional - Guava support for Room, including Optional and ListenableFuture
     implementation "androidx.room:room-guava:$room_version"
-
-    // optional - Test helpers
     testImplementation "androidx.room:room-testing:$room_version"
 
 
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
 }
