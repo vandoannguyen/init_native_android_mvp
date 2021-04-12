@@ -1,12 +1,14 @@
 package com.example.init_app_vpn_native.ui.main;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.init_app_vpn_native.base.BaseViewModel;
 import com.example.init_app_vpn_native.data.AppDataHelper;
+import com.example.init_app_vpn_native.data.api.model.Repo;
 import com.example.init_app_vpn_native.data.local.NoteModelEntity;
 
 import java.util.List;
@@ -43,6 +45,30 @@ public class MainViewModel extends BaseViewModel {
     }
 
     void insertNote(NoteModelEntity note) {
+        AppDataHelper.getInstance(context).getData("vandoannguyen")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<Repo>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull List<Repo> repos) {
+                        Log.e(TAG, "onNext: " + repos.size() );
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
         dem++;
         AppDataHelper.getInstance(context)
                 .insertNote(new NoteModelEntity("title" + dem, "content" + dem, "", ""))

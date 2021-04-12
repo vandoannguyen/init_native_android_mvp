@@ -3,6 +3,7 @@ package com.example.init_app_vpn_native.data;
 import android.content.Context;
 
 import com.example.init_app_vpn_native.data.api.ApiHepler;
+import com.example.init_app_vpn_native.data.api.model.Repo;
 import com.example.init_app_vpn_native.data.local.LocalHelper;
 import com.example.init_app_vpn_native.data.local.NoteModelEntity;
 import com.example.init_app_vpn_native.data.share_pref.SharePreferHelper;
@@ -29,8 +30,8 @@ public class AppDataHelper implements IAppDataHelper {
     }
 
     @Override
-    public Observable<Integer> getData() {
-        return apiHepler.getData();
+    public Observable<List<Repo>> getData(String user) {
+        return apiHepler.getData(user);
     }
 
     @Override
