@@ -32,12 +32,6 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
         viewModel.getListNote().observe(this, (noteModelEntities) -> {
             if (adapter != null) adapter.setList(noteModelEntities);
         });
-//        viewModel.getDems().observe(this, new Observer<Integer>() {
-//            @Override
-//            public void onChanged(Integer integer) {
-//                txtDem.setText(integer + "");
-//            }
-//        });
     }
 
     private void initRecyclerView() {
@@ -45,11 +39,6 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
         binding.recyclerview.setAdapter(adapter);
         binding.recyclerview.setLayoutManager(new LinearLayoutManager(this));
     }
-
-//    @OnClick(R.id.btnAdd)
-//    public void onViewClicked() {
-//        viewModel.insertNote(null);
-//    }
 
     @Override
     public MainViewModel createViewModel() {

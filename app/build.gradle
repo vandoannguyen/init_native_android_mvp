@@ -33,8 +33,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    ///fan
-    implementation 'com.facebook.android:audience-network-sdk:5.+'
     //    butter knief
     implementation 'com.jakewharton:butterknife:10.2.3'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
@@ -61,4 +59,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+    implementation("com.squareup.okhttp3:okhttp:4.9.0")
+//    realm
+    implementation 'io.realm:realm-android:0.84.1'
+
 }

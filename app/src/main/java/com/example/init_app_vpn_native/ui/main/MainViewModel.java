@@ -3,20 +3,27 @@ package com.example.init_app_vpn_native.ui.main;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.init_app_vpn_native.base.BaseViewModel;
 import com.example.init_app_vpn_native.data.AppDataHelper;
 import com.example.init_app_vpn_native.data.api.model.Repo;
+import com.example.init_app_vpn_native.data.api.model.User;
 import com.example.init_app_vpn_native.data.local.NoteModelEntity;
 
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainViewModel extends BaseViewModel {
@@ -45,51 +52,42 @@ public class MainViewModel extends BaseViewModel {
     }
 
     void insertNote(NoteModelEntity note) {
-        AppDataHelper.getInstance(context).getData("vandoannguyen")
+        Log.e(TAG, "insertNote: ");
+        AppDataHelper.getInstance(context).getUsers()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<Repo>>() {
+                .flatMap(new Function<List<User>, ObservableSource<User>>() {
+                    @Override
+                    public Observable<User> apply(List<User> users) throws Throwable {
+                        for (User u : users) {
+                            Log.e(TAG, "apply: " + u.getLogin());
+                            Toast.makeText(context, "okokok", Toast.LENGTH_SHORT).show();
+                        }
+                        return Observable.fromIterable(users);
+                    }
+                })
+                .flatMap(new Function<User, Observable<Object>>() {
+                    @Override
+                    public Observable<Object> apply(User s) throws Throwable {
+                        return AppDataHelper.getInstance(MainViewModel.this.context).getData(s.getLogin());
+                    }
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Object>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(@NonNull List<Repo> repos) {
-                        Log.e(TAG, "onNext: " + repos.size() );
+                    public void onNext(@NonNull Object o) {
+                        Toast.makeText(context, "okokokokokokok", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "onNext: " + o.toString());
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-        dem++;
-        AppDataHelper.getInstance(context)
-                .insertNote(new NoteModelEntity("title" + dem, "content" + dem, "", ""))
-                .flatMap(result -> AppDataHelper.getInstance(context).getNotes())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<NoteModelEntity>>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(@NonNull List<NoteModelEntity> noteModelEntities) {
-                        listNote.postValue(noteModelEntities);
-                        dems.postValue(dem);
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
+                        Log.e(TAG, "onError: " + e);
                     }
 
                     @Override

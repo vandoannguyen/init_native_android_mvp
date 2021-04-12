@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.init_app_vpn_native.data.api.ApiHepler;
 import com.example.init_app_vpn_native.data.api.model.Repo;
+import com.example.init_app_vpn_native.data.api.model.User;
 import com.example.init_app_vpn_native.data.local.LocalHelper;
 import com.example.init_app_vpn_native.data.local.NoteModelEntity;
 import com.example.init_app_vpn_native.data.share_pref.SharePreferHelper;
@@ -30,8 +31,13 @@ public class AppDataHelper implements IAppDataHelper {
     }
 
     @Override
-    public Observable<List<Repo>> getData(String user) {
+    public Observable<Object> getData(String user) {
         return apiHepler.getData(user);
+    }
+
+    @Override
+    public Observable<List<User>> getUsers() {
+        return apiHepler.getUsers();
     }
 
     @Override
@@ -41,7 +47,7 @@ public class AppDataHelper implements IAppDataHelper {
 
     @Override
     public Observable<NoteModelEntity> getNote(int id) {
-        return null;
+        return localHelper.getNote(id);
     }
 
     @Override
@@ -51,11 +57,11 @@ public class AppDataHelper implements IAppDataHelper {
 
     @Override
     public Observable<Boolean> update(NoteModelEntity note) {
-        return null;
+        return localHelper.update(note);
     }
 
     @Override
     public Observable<Boolean> delete(NoteModelEntity note) {
-        return null;
+        return localHelper.delete(note);
     }
 }

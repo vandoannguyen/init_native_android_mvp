@@ -1,6 +1,7 @@
 package com.example.init_app_vpn_native.data.api;
 
 import com.example.init_app_vpn_native.data.api.model.Repo;
+import com.example.init_app_vpn_native.data.api.model.User;
 import com.example.init_app_vpn_native.data.api.provider.RetrofitClient;
 
 import java.util.List;
@@ -18,7 +19,12 @@ public class ApiHepler implements IApiHelper {
     }
 
     @Override
-    public Observable<List<Repo>> getData(String user) {
+    public Observable<Object> getData(String user) {
         return apiHelper.getData(user);
+    }
+
+    @Override
+    public Observable<List<User>> getUsers() {
+        return apiHelper.getUsers();
     }
 }
