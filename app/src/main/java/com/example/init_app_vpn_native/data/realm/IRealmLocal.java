@@ -3,14 +3,16 @@ package com.example.init_app_vpn_native.data.realm;
 import java.util.List;
 import java.util.Observable;
 
+import io.reactivex.rxjava3.core.Single;
+
 public interface IRealmLocal {
-    void insert(NoteRealm note);
+    Single<Boolean> realmInsert(NoteRealm note);
 
-    void delete(NoteRealm note);
+    Single<Void> realmDelete(NoteRealm note);
 
-    void update(NoteRealm note);
+    Single<Void> realmUpdate(NoteRealm note);
 
-    List<NoteRealm> get();
+    Single<List<NoteRealm>> realmGet();
 
-    NoteRealm get(String title);
+    Single<NoteRealm> realmGet(String title);
 }
