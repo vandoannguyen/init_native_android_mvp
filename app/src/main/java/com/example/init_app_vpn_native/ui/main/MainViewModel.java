@@ -1,18 +1,24 @@
 package com.example.init_app_vpn_native.ui.main;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.init_app_vpn_native.R;
 import com.example.init_app_vpn_native.base.BaseViewModel;
 import com.example.init_app_vpn_native.data.AppDataHelper;
-import com.example.init_app_vpn_native.data.api.model.Repo;
 import com.example.init_app_vpn_native.data.api.model.User;
 import com.example.init_app_vpn_native.data.local.NoteModelEntity;
+import com.example.init_app_vpn_native.data.realm.NoteRealm;
+import com.example.init_app_vpn_native.utils.noification.NotificationUtil;
 
+import java.util.Calendar;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -22,9 +28,9 @@ import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import io.realm.Realm;
 
 public class MainViewModel extends BaseViewModel {
     Context context;
@@ -35,7 +41,7 @@ public class MainViewModel extends BaseViewModel {
     }
 
     private static final String TAG = "MainViewModel";
-    MutableLiveData<List<NoteModelEntity>> listNote;
+    MutableLiveData<List<NoteRealm>> listNote;
     MutableLiveData<Boolean> isLoading;
     MutableLiveData<Integer> dems;
 
@@ -43,7 +49,7 @@ public class MainViewModel extends BaseViewModel {
         return dems;
     }
 
-    public MutableLiveData<List<NoteModelEntity>> getListNote() {
+    public MutableLiveData<List<NoteRealm>> getListNote() {
         return listNote;
     }
 
@@ -97,6 +103,32 @@ public class MainViewModel extends BaseViewModel {
                 });
     }
 
+    void insertNote(NoteRealm noteRealm) {
+        AppDataHelper.getInstance(context)
+                .realmInsert(new NoteRealm("demo title" + Calendar.getInstance().getTimeInMillis(), "demo content"))
+                .flatMap(aVoid -> AppDataHelper.getInstance(MainViewModel.this.context).realmGet())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<NoteRealm>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        addDisposable(d);
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull List<NoteRealm> noteRealms) {
+                        Realm.getDefaultInstance().beginTransaction();
+                        listNote.postValue(noteRealms);
+                        Realm.getDefaultInstance().commitTransaction();
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.e(TAG, "onError: " + e);
+                    }
+                });
+    }
+
     @Override
     public void initViewModelData() {
         super.initViewModelData();
@@ -106,7 +138,13 @@ public class MainViewModel extends BaseViewModel {
     }
 
     public void onClickAdd(View v) {
-        insertNote(null);
+        Bitmap contact_pic = BitmapFactory.decodeResource(
+                v.getContext().getResources(),
+                R.mipmap.ic_launcher
+        );
+        NotificationUtil.showNotification(context,
+                "demo title" + Calendar.getInstance().getTimeInMillis(),
+                "demo content", NotificationCompat.PRIORITY_DEFAULT,contact_pic, MainActivity.class);
     }
 
     public void initData() {

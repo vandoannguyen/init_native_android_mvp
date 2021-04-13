@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.init_app_vpn_native.R;
 import com.example.init_app_vpn_native.data.local.NoteModelEntity;
+import com.example.init_app_vpn_native.data.realm.NoteRealm;
 
 import java.util.List;
 
@@ -34,8 +35,8 @@ public class NoteMainAdapter extends RecyclerView.Adapter<NoteMainAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.txtText.setText(((NoteModelEntity) list.get(position)).title);
-        holder.txtTitle.setText(((NoteModelEntity) list.get(position)).note);
+        holder.txtText.setText(((NoteRealm) list.get(position)).getTitle());
+        holder.txtTitle.setText(((NoteRealm) list.get(position)).getNote());
     }
 
     @Override

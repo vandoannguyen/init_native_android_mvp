@@ -39,4 +39,10 @@ public abstract class BaseActivity<VM extends BaseViewModel, BD extends ViewData
         binding.setLifecycleOwner(this);
         binding.setVariable(BR.viewModel, this.viewModel);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        viewModel.onDestroy();
+    }
 }

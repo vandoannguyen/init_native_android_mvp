@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "note")
 public class NoteModelEntity {
+    @Ignore
     public NoteModelEntity(String title, String note, String createAt, String updateeAt) {
         this.title = title;
         this.note = note;
