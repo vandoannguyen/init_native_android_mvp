@@ -1,5 +1,6 @@
 package com.example.init_app_vpn_native.ui.main;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,6 +19,7 @@ import com.example.init_app_vpn_native.data.local.NoteModelEntity;
 import com.example.init_app_vpn_native.data.realm.NoteRealm;
 import com.example.init_app_vpn_native.utils.noification.NotificationUtil;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -41,7 +43,7 @@ public class MainViewModel extends BaseViewModel {
     }
 
     private static final String TAG = "MainViewModel";
-    MutableLiveData<List<NoteRealm>> listNote;
+    MutableLiveData<List<User>> listNote;
     MutableLiveData<Boolean> isLoading;
     MutableLiveData<Integer> dems;
 
@@ -49,7 +51,7 @@ public class MainViewModel extends BaseViewModel {
         return dems;
     }
 
-    public MutableLiveData<List<NoteRealm>> getListNote() {
+    public MutableLiveData<List<User>> getListNote() {
         return listNote;
     }
 
@@ -58,49 +60,59 @@ public class MainViewModel extends BaseViewModel {
     }
 
     void insertNote(NoteModelEntity note) {
+        List<User> list  = new ArrayList<>();
+        list.add(new User(1,"1"));
+        list.add(new User(2,"2"));
+        list.add(new User(3,"3"));
+        list.add(new User(4,"4"));
+        listNote.setValue(list);
+        listNote.postValue(list);
         Log.e(TAG, "insertNote: ");
-        AppDataHelper.getInstance(context).getUsers()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .flatMap(new Function<List<User>, ObservableSource<User>>() {
-                    @Override
-                    public Observable<User> apply(List<User> users) throws Throwable {
-                        for (User u : users) {
-                            Log.e(TAG, "apply: " + u.getLogin());
-                            Toast.makeText(context, "okokok", Toast.LENGTH_SHORT).show();
-                        }
-                        return Observable.fromIterable(users);
-                    }
-                })
-                .flatMap(new Function<User, Observable<Object>>() {
-                    @Override
-                    public Observable<Object> apply(User s) throws Throwable {
-                        return AppDataHelper.getInstance(MainViewModel.this.context).getData(s.getLogin());
-                    }
-                }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Object>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(@NonNull Object o) {
-                        Toast.makeText(context, "okokokokokokok", Toast.LENGTH_SHORT).show();
-                        Log.e(TAG, "onNext: " + o.toString());
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        Log.e(TAG, "onError: " + e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+//        AppDataHelper.getInstance(context).getUsers()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .flatMap(new Function<List<User>, ObservableSource<User>>() {
+//                    @Override
+//                    public Observable<User> apply(List<User> users) throws Throwable {
+//                        listNote.setValue(users);
+//                        listNote.postValue(users);
+//                        return Observable.fromIterable(users);
+//                    }
+//                })
+//                .flatMap(new Function<User, Observable<User>>() {
+//                    @Override
+//                    public Observable<User> apply(User s) throws Throwable {
+//                        return AppDataHelper.getInstance(MainViewModel.this.context).getData(s.getLogin());
+//                    }
+//                }).subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<User>() {
+//                    @Override
+//                    public void onSubscribe(@NonNull Disposable d) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(@NonNull User o) {
+//                        List<User> users = listNote.getValue();
+//                        int index = users.indexOf(o);
+//                        if (index != -1) {
+//                            users.set(index, o);
+//                        }
+//                        listNote.setValue(users);
+//                        listNote.postValue(users);
+//                    }
+//
+//                    @Override
+//                    public void onError(@NonNull Throwable e) {
+//                        Log.e(TAG, "onError: " + e);
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
     }
 
     void insertNote(NoteRealm noteRealm) {
@@ -118,7 +130,7 @@ public class MainViewModel extends BaseViewModel {
                     @Override
                     public void onSuccess(@NonNull List<NoteRealm> noteRealms) {
                         Realm.getDefaultInstance().beginTransaction();
-                        listNote.postValue(noteRealms);
+//                        listNote.postValue(noteRealms);
                         Realm.getDefaultInstance().commitTransaction();
                     }
 
@@ -138,13 +150,14 @@ public class MainViewModel extends BaseViewModel {
     }
 
     public void onClickAdd(View v) {
-        Bitmap contact_pic = BitmapFactory.decodeResource(
-                v.getContext().getResources(),
-                R.mipmap.ic_launcher
-        );
-        NotificationUtil.showNotification(context,
-                "demo title" + Calendar.getInstance().getTimeInMillis(),
-                "demo content", NotificationCompat.PRIORITY_DEFAULT,contact_pic, MainActivity.class);
+//        Bitmap contact_pic = BitmapFactory.decodeResource(
+//                v.getContext().getResources(),
+//                R.mipmap.ic_launcher
+//        );
+//        NotificationUtil.showNotification(context,
+//                "demo title" + Calendar.getInstance().getTimeInMillis(),
+//                "demo content", NotificationCompat.PRIORITY_DEFAULT, contact_pic, MainActivity.class);
+        insertNote(new NoteModelEntity());
     }
 
     public void initData() {

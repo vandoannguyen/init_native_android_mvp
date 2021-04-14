@@ -9,21 +9,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.init_app_vpn_native.R;
+import com.example.init_app_vpn_native.base.BaseAdapterRecyclerView;
+import com.example.init_app_vpn_native.data.api.model.User;
 import com.example.init_app_vpn_native.data.local.NoteModelEntity;
 import com.example.init_app_vpn_native.data.realm.NoteRealm;
 
 import java.util.List;
 
-public class NoteMainAdapter extends RecyclerView.Adapter<NoteMainAdapter.ViewHolder> {
-    List list;
+public class NoteMainAdapter extends BaseAdapterRecyclerView<NoteMainAdapter.ViewHolder> {
 
     public NoteMainAdapter(List list) {
-        this.list = list;
-    }
-
-    public void setList(List list) {
-        this.list = list;
-        notifyDataSetChanged();
+        super(list);
     }
 
     @NonNull
@@ -34,14 +30,9 @@ public class NoteMainAdapter extends RecyclerView.Adapter<NoteMainAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.txtText.setText(((NoteRealm) list.get(position)).getTitle());
-        holder.txtTitle.setText(((NoteRealm) list.get(position)).getNote());
-    }
-
-    @Override
-    public int getItemCount() {
-        return list.size();
+    public void onBindViewHolder(int position, ViewHolder holder) {
+        holder.txtText.setText(((User) list.get(position)).getId().toString());
+        holder.txtTitle.setText(((User) list.get(position)).getName() != null ? ((User) list.get(position)).getName() : "Loading....");
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -50,7 +41,7 @@ public class NoteMainAdapter extends RecyclerView.Adapter<NoteMainAdapter.ViewHo
 
         public ViewHolder(@NonNull View view) {
             super(view);
-            txtText = view.findViewById(R.id.txtTitle);
+            txtText = view.findViewById(R.id.txtContent);
             txtTitle = view.findViewById(R.id.txtTitle);
         }
     }

@@ -3,12 +3,14 @@ package com.example.init_app_vpn_native.ui.main;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.init_app_vpn_native.R;
 import com.example.init_app_vpn_native.base.BaseActivity;
+import com.example.init_app_vpn_native.base.BaseViewModelFactory;
 import com.example.init_app_vpn_native.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
@@ -35,15 +37,20 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
     }
 
     private void initRecyclerView() {
-        adapter = new NoteMainAdapter(viewModel.getListNote().getValue() == null ? new ArrayList() : viewModel.getListNote().getValue());
+        adapter = new NoteMainAdapter(viewModel.getListNote().getValue() == null
+                ? new ArrayList()
+                : viewModel.getListNote().getValue());
+        adapter.setItemClickListener((position -> {
+            Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
+        }));
         binding.recyclerview.setAdapter(adapter);
         binding.recyclerview.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
     public MainViewModel createViewModel() {
-        Log.e(TAG, "createViewModel: ");
-        MainViewModelFactory factory = new MainViewModelFactory(this);
+        BaseViewModelFactory<MainViewModel> factory;
+        factory = new BaseViewModelFactory(new MainViewModel(this));
         return new ViewModelProvider(this, factory).get(MainViewModel.class);
     }
 

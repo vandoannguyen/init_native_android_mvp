@@ -39,7 +39,7 @@ public class AppDataHelper implements IAppDataHelper {
     }
 
     @Override
-    public Observable<Object> getData(String user) {
+    public Observable<User> getData(String user) {
         return apiHepler.getData(user);
     }
 

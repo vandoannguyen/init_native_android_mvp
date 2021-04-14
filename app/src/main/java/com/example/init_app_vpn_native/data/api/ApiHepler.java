@@ -19,7 +19,7 @@ public class ApiHepler implements IApiHelper {
     }
 
     @Override
-    public Observable<Object> getData(String user) {
+    public Observable<User> getData(String user) {
         return apiHelper.getData(user);
     }
 

@@ -81,6 +81,40 @@ public class NotificationUtil {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, NOTIFICATION_REQUEST_CODE, intent, 0);
         notificationManager.notify(NOTIFICATION_ID, builder(context, title, content, priority, largeIcon).setContentIntent(pendingIntent).build());
     }
+//    public static void showNotification(Context context, String title, String content, int priority, Class<?> classPending, Action... actions) {
+//        NotificationManagerCompat notificationManager;
+//        notificationManager = NotificationManagerCompat.from(context);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            CharSequence name = CHANNEL_ID;
+//            String description = CHANNEL_ID;
+//            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+//            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+//            channel.setDescription(description);
+//            notificationManager.createNotificationChannel(channel);
+//        }
+//        Intent intent = new Intent(context, classPending);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(context, NOTIFICATION_REQUEST_CODE, intent, 0);
+//        notificationManager.notify(NOTIFICATION_ID, builder(context, title, content, priority, actions).setContentIntent(pendingIntent).build());
+//    }
+
+
+//    public static void showNotification(Context context, String title, String content, int priority, Class<?> classPending, Bitmap largeIcon,String ... action) {
+//        NotificationManagerCompat notificationManager;
+//        notificationManager = NotificationManagerCompat.from(context);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            CharSequence name = CHANNEL_ID;
+//            String description = CHANNEL_ID;
+//            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+//            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+//            channel.setDescription(description);
+//            notificationManager.createNotificationChannel(channel);
+//        }
+//        Intent intent = new Intent(context, classPending);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(context, NOTIFICATION_REQUEST_CODE, intent, 0);
+//        notificationManager.notify(NOTIFICATION_ID, builder(context, title, content, priority, largeIcon, actions).setContentIntent(pendingIntent).build());
+//    }
 
     public class Action {
         int icon;

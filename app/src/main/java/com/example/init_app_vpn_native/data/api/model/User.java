@@ -3,6 +3,8 @@ package com.example.init_app_vpn_native.data.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Objects;
+
 public class User {
 
     @SerializedName("login")
@@ -101,6 +103,11 @@ public class User {
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
+
+    public User(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public String getLogin() {
         return login;
@@ -358,4 +365,16 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return Objects.equals(getId(), user.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 }

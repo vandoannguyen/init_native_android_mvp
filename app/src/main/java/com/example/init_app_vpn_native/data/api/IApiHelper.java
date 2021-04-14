@@ -13,7 +13,7 @@ import retrofit2.http.Path;
 
 public interface IApiHelper {
     @GET("/users/{user}")
-    Observable<Object> getData(@Path("user") String user);
+    Observable<User> getData(@Path("user") String user);
 
     @GET("/users")
     Observable<List<User>> getUsers();
