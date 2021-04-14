@@ -1,32 +1,33 @@
 package com.example.init_app_vpn_native.ui.main;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.init_app_vpn_native.R;
 import com.example.init_app_vpn_native.base.BaseViewModel;
 import com.example.init_app_vpn_native.data.AppDataHelper;
-import com.example.init_app_vpn_native.data.api.model.Repo;
 import com.example.init_app_vpn_native.data.api.model.User;
 import com.example.init_app_vpn_native.data.local.NoteModelEntity;
 import com.example.init_app_vpn_native.data.realm.NoteRealm;
+import com.example.init_app_vpn_native.utils.noification.NotificationUtil;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.Random;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.realm.Realm;
@@ -127,6 +128,7 @@ public class MainViewModel extends BaseViewModel {
                     }
                 });
     }
+
     @Override
     public void initViewModelData() {
         super.initViewModelData();
@@ -136,7 +138,13 @@ public class MainViewModel extends BaseViewModel {
     }
 
     public void onClickAdd(View v) {
-        insertNote(new NoteRealm());
+        Bitmap contact_pic = BitmapFactory.decodeResource(
+                v.getContext().getResources(),
+                R.mipmap.ic_launcher
+        );
+        NotificationUtil.showNotification(context,
+                "demo title" + Calendar.getInstance().getTimeInMillis(),
+                "demo content", NotificationCompat.PRIORITY_DEFAULT,contact_pic, MainActivity.class);
     }
 
     public void initData() {

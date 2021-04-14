@@ -1,6 +1,5 @@
 package com.example.init_app_vpn_native.utils.noification;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,28 +9,30 @@ import android.graphics.Bitmap;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.example.init_app_vpn_native.BuildConfig;
 import com.example.init_app_vpn_native.R;
 
 public class NotificationUtil {
     private static final String CHANNEL_ID = "" + BuildConfig.APPLICATION_ID;
+    private static final int NOTIFICATION_ID = 12;
     public static int NOTIFICATION_REQUEST_CODE = 1;
 
-    NotificationCompat.Builder builder(Context context, String title, String content, int priority) {
+    private static NotificationCompat.Builder builder(Context context, String title, String content, int priority) {
         NotificationCompat.Builder build;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             build = new NotificationCompat.Builder(context, CHANNEL_ID);
         else build = new NotificationCompat.Builder(context);
-        build.setSmallIcon(R.mipmap.ic_launcher).setContentTitle(content).setContentText(content).setPriority(priority);
+        build.setSmallIcon(R.mipmap.ic_launcher).setContentTitle(title).setContentText(content).setPriority(priority);
         return build;
     }
 
-    NotificationCompat.Builder builder(Context context, String title, String content, int priority, Bitmap largeIcon) {
+    private static NotificationCompat.Builder builder(Context context, String title, String content, int priority, Bitmap largeIcon) {
         return builder(context, title, content, priority).setLargeIcon(largeIcon);
     }
 
-    NotificationCompat.Builder builder(Context context, String title, String content, int priority, Action... actions) {
+    private static NotificationCompat.Builder builder(Context context, String title, String content, int priority, Action... actions) {
         NotificationCompat.Builder build = builder(context, title, content, priority);
         for (Action a : actions) {
             build.addAction(a.icon, a.actionName, a.pendingIntent);
@@ -39,7 +40,7 @@ public class NotificationUtil {
         return build;
     }
 
-    NotificationCompat.Builder builder(Context context, String title, String content, int priority, Bitmap largeIcon, Action... actions) {
+    private static NotificationCompat.Builder builder(Context context, String title, String content, int priority, Bitmap largeIcon, Action... actions) {
         NotificationCompat.Builder build = builder(context, title, content, priority).setLargeIcon(largeIcon);
         for (Action a : actions) {
             build.addAction(a.icon, a.actionName, a.pendingIntent);
@@ -47,18 +48,38 @@ public class NotificationUtil {
         return build;
     }
 
-    public static void showNotification(Context context,) {
-        NotificationManager notificationManager;
+    public static void showNotification(Context context, String title, String content, int priority, Class<?> classPending) {
+        NotificationManagerCompat notificationManager;
+        notificationManager = NotificationManagerCompat.from(context);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = CHANNEL_ID;
             String description = CHANNEL_ID;
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
-            notificationManager = context.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+        Intent intent = new Intent(context, classPending);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, NOTIFICATION_REQUEST_CODE, intent, 0);
+        notificationManager.notify(NOTIFICATION_ID, builder(context, title, content, priority).setContentIntent(pendingIntent).build());
+    }
 
+    public static void showNotification(Context context, String title, String content, int priority, Bitmap largeIcon, Class<?> classPending) {
+        NotificationManagerCompat notificationManager;
+        notificationManager = NotificationManagerCompat.from(context);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = CHANNEL_ID;
+            String description = CHANNEL_ID;
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            notificationManager.createNotificationChannel(channel);
+        }
+        Intent intent = new Intent(context, classPending);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, NOTIFICATION_REQUEST_CODE, intent, 0);
+        notificationManager.notify(NOTIFICATION_ID, builder(context, title, content, priority, largeIcon).setContentIntent(pendingIntent).build());
     }
 
     public class Action {
