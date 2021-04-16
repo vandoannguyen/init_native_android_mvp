@@ -31,6 +31,13 @@ public class AppDataHelper implements IAppDataHelper {
         return dataHelper != null ? dataHelper : (dataHelper = new AppDataHelper(context));
     }
 
+    public AppDataHelper(IApiHelper apiHepler, ILocalHepler localHelper, ISharePreferHelper sharePreferHelper, IRealmLocal realmLocal) {
+        this.apiHepler = apiHepler;
+        this.localHelper = localHelper;
+        this.sharePreferHelper = sharePreferHelper;
+        this.realmLocal = realmLocal;
+    }
+
     private AppDataHelper(Context context) {
         apiHepler = new ApiHepler();
         localHelper = new LocalHelper(context);

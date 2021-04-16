@@ -14,6 +14,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.init_app_vpn_native.R;
 import com.example.init_app_vpn_native.base.BaseViewModel;
 import com.example.init_app_vpn_native.data.AppDataHelper;
+import com.example.init_app_vpn_native.data.IAppDataHelper;
 import com.example.init_app_vpn_native.data.api.model.User;
 import com.example.init_app_vpn_native.data.local.NoteModelEntity;
 import com.example.init_app_vpn_native.data.realm.NoteRealm;
@@ -23,6 +24,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.Provides;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -37,6 +41,13 @@ import io.realm.Realm;
 public class MainViewModel extends BaseViewModel {
     Context context;
     private int dem = 0;
+    private IAppDataHelper appDataHelper;
+
+    @Inject
+    public MainViewModel(IAppDataHelper appDataHelper) {
+        this.appDataHelper = appDataHelper;
+    }
+
 
     public MainViewModel(Context context) {
         this.context = context;
@@ -60,11 +71,11 @@ public class MainViewModel extends BaseViewModel {
     }
 
     void insertNote(NoteModelEntity note) {
-        List<User> list  = new ArrayList<>();
-        list.add(new User(1,"1"));
-        list.add(new User(2,"2"));
-        list.add(new User(3,"3"));
-        list.add(new User(4,"4"));
+        List<User> list = new ArrayList<>();
+        list.add(new User(1, "1"));
+        list.add(new User(2, "2"));
+        list.add(new User(3, "3"));
+        list.add(new User(4, "4"));
         listNote.setValue(list);
         listNote.postValue(list);
         Log.e(TAG, "insertNote: ");

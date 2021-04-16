@@ -12,7 +12,7 @@ import io.realm.RealmResults;
 public class RealmLocalImpl implements IRealmLocal {
     Realm realm;
 
-    public RealmLocalImpl(Context context) {
+    public RealmLocalImpl() {
     }
 
     @Override
